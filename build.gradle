@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.61'
 }
 
-group 'org.bergen.atcs.atics.antli22-edwfen22'
+group 'org.bergen.atcs.atics.antedw'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
