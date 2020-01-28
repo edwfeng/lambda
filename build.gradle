@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'org.bergen.atcs.atics.antedw'
+group 'org.bergen.atcs.atics.ant'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8

@@ -1,4 +1,4 @@
-package org.bergen.atcs.atics.antedw.lambda;
+package main.java.org.bergen.atcs.atics.ant.lambda;
 
 public interface Expression {
     default Expression run() {
