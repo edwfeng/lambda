@@ -3,7 +3,7 @@ package org.bergen.atcs.atics.lambda;
 import java.util.function.Function;
 
 public class Lambda implements Expression {
-    public class BoundVariable implements Expression {
+    public static class BoundVariable implements Expression {
         private BoundVariable() {}
     }
 
