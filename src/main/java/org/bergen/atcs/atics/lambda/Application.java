@@ -8,4 +8,13 @@ public class Application implements Expression {
         this.left = left;
         this.right = right;
     }
+
+    public Expression run() {
+        Expression leftResolved = left.run();
+        if (leftResolved instanceof Lambda) {
+            return ((Lambda) leftResolved).apply(right.run()).run();
+        } else {
+            return this;
+        }
+    }
 }
