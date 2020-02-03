@@ -23,4 +23,15 @@ public class Lambda implements Expression {
     public Expression apply(Expression arg) {
         return expression.replace(parameter, arg);
     }
+
+    public Expression replace(Expression search, Expression replaceWith) {
+        if (equals(search)) {
+            return replaceWith;
+        }
+
+        return new Lambda(
+                parameter,
+                expression.replace(search, replaceWith)
+        );
+    }
 }
