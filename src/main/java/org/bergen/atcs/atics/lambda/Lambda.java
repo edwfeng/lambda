@@ -3,35 +3,18 @@ package org.bergen.atcs.atics.lambda;
 import java.util.function.Function;
 
 public class Lambda implements Expression {
-    public static class BoundVariable implements Expression {
-        private BoundVariable() {}
-    }
+    // BoundVariable is no longer used when evaluating expressions.
+    // It will be moved to the lambda serializer, which will use
+    // the class as a placeholder for the true value of the bound
+    // variable.
 
-    public final BoundVariable parameter;
-    public final Expression expression;
+    public final Function<Expression, Expression> makeExpression;
 
-    private Lambda(BoundVariable parameter, Expression expression) {
-        this.parameter = parameter;
-        this.expression = expression;
-    }
-
-    public Lambda(Function<BoundVariable, Expression> makeExpression) {
-        parameter = new BoundVariable();
-        expression = makeExpression.apply(parameter);
+    public Lambda(Function<Expression, Expression> makeExpression) {
+        this.makeExpression = makeExpression;
     }
 
     public Expression apply(Expression arg) {
-        return expression.replace(parameter, arg);
-    }
-
-    public Expression replace(Expression search, Expression replaceWith) {
-        if (equals(search)) {
-            return replaceWith;
-        }
-
-        return new Lambda(
-                parameter,
-                expression.replace(search, replaceWith)
-        );
+        return makeExpression.apply(arg);
     }
 }

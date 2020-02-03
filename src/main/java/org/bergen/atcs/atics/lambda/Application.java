@@ -17,15 +17,4 @@ public class Application implements Expression {
             return this;
         }
     }
-
-    public Expression replace(Expression search, Expression replaceWith) {
-        if (equals(search)) {
-            return replaceWith;
-        }
-
-        return new Application(
-                left.replace(search, replaceWith),
-                right.replace(search, replaceWith)
-        );
-    }
 }
