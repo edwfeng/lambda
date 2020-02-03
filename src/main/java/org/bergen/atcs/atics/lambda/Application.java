@@ -8,4 +8,15 @@ public class Application implements Expression {
         this.left = left;
         this.right = right;
     }
+
+    public Expression replace(Expression search, Expression replaceWith) {
+        if (equals(search)) {
+            return replaceWith;
+        }
+
+        return new Application(
+                left.replace(search, replaceWith),
+                right.replace(search, replaceWith)
+        );
+    }
 }
