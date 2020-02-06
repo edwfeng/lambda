@@ -26,13 +26,13 @@ public class LambdaTest {
         Expression expression = makeIdentityFunction();
 
         AtomicInteger numTimesCalled = new AtomicInteger(0);
-        @SuppressWarnings("NonAsciiCharacters") Lambda mλ = new Lambda(boundVariable -> {
+        Lambda mLambda = new Lambda(boundVariable -> {
             numTimesCalled.incrementAndGet();
             return expression;
         });
 
         assertEquals(1, numTimesCalled.get());
-        assertSame(expression, mλ.expression);
+        assertSame(expression, mLambda.expression);
     }
 
     @Test void constructorPassesBoundVariableToFunction() {
