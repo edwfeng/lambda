@@ -34,14 +34,17 @@ public class Application implements Expression {
         }
     } */
 
-    /* public Expression replace(Expression search, Expression replaceWith) {
-        if (equals(search)) {
-            return replaceWith;
+    @Override
+    public void replace(Expression search, Expression replaceWith) {
+        if (getLeft().equals(search)) {
+            setLeft(replaceWith);
+        } else {
+            getLeft().replace(search, replaceWith);
         }
 
-        return new Application(
-                left.replace(search, replaceWith),
-                right.replace(search, replaceWith)
-        );
-    } */
+        if (getRight().equals(search)) {
+            setRight(replaceWith);
+            getRight().replace(search, replaceWith);
+        }
+    }
 }

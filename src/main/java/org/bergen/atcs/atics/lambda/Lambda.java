@@ -27,7 +27,12 @@ public class Lambda implements Expression {
         return expression.replace(parameter, arg);
     } */
 
+    @Override
     public void replace(Expression search, Expression replaceWith) {
-
+        if (getExpression().equals(search)) {
+            setExpression(replaceWith);
+        } else {
+            getExpression().replace(search, replaceWith);
+        }
     }
 }
