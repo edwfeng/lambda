@@ -10,11 +10,6 @@ public class Lambda implements Expression {
     public final BoundVariable parameter;
     public final Expression expression;
 
-    private Lambda(BoundVariable parameter, Expression expression) {
-        this.parameter = parameter;
-        this.expression = expression;
-    }
-
     public Lambda(Function<BoundVariable, Expression> makeExpression) {
         parameter = new BoundVariable();
         expression = makeExpression.apply(parameter);
