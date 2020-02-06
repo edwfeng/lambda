@@ -16,4 +16,11 @@ public interface Expression {
      * @param replaceWith expression to replace {@code search} with
      */
     default void replace(Expression search, Expression replaceWith) {}
+
+    /**
+     * Creates a new Expression that is η-equivalent to the Expression it is called on.
+     *
+     * @return new Expression
+     */
+    Expression deepCopy();
 }

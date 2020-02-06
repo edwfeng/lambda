@@ -6,4 +6,8 @@ public class FreeVariable implements Expression {
     public FreeVariable(String name) {
         this.name = name;
     }
+
+    public FreeVariable deepCopy() {
+        return new FreeVariable(name);
+    }
 }

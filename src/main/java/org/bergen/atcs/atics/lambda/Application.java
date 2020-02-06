@@ -28,4 +28,11 @@ public class Application implements Expression {
                 right.replace(search, replaceWith)
         );
     } */
+
+    public Application deepCopy() {
+        return new Application(
+                left.deepCopy(),
+                right.deepCopy()
+        );
+    }
 }
