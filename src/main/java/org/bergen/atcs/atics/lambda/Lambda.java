@@ -10,19 +10,32 @@ public class Lambda implements Expression {
     }
 
     public final BoundVariable parameter;
-    public final Expression expression;
+    private Expression expression;
 
     public Lambda(Function<BoundVariable, Expression> makeExpression) {
         parameter = new BoundVariable();
         expression = makeExpression.apply(parameter);
     }
 
+    public Expression getExpression() {
+        return expression;
+    }
+
+    private void setExpression(Expression expression) {
+        this.expression = expression;
+    }
+
     /* public Expression apply(Expression arg) {
         return expression.replace(parameter, arg);
     } */
 
+    @Override
     public void replace(Expression search, Expression replaceWith) {
-
+        if (getExpression().equals(search)) {
+            setExpression(replaceWith);
+        } else {
+            getExpression().replace(search, replaceWith);
+        }
     }
 
     public Lambda deepCopy() {
