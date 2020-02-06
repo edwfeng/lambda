@@ -25,9 +25,18 @@ public class Lambda implements Expression {
         this.expression = expression;
     }
 
-    /* public Expression apply(Expression arg) {
-        return expression.replace(parameter, arg);
-    } */
+    public Expression apply(Expression arg) {
+        // If the lambda is just the identity function, return the argument immediately.
+        if (parameter.equals(getExpression())) {
+            return arg;
+        }
+
+        // Otherwise, copy the expression, replacing all instances of the bound variable
+        // with arg.
+        Expression newExpression = expression.deepCopy();
+        newExpression.replace(parameter, arg);
+        return newExpression;
+    }
 
     @Override
     public void replace(Expression search, Expression replaceWith) {

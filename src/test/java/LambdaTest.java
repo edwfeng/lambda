@@ -40,13 +40,6 @@ public class LambdaTest {
         assertSame(mLambda.parameter, mLambda.getExpression());
     }
 
-    /* @Test void replaceReplacesSelf() {
-        Lambda a = makeIdentityFunction();
-        Lambda ignoring = new Lambda(x -> a);
-
-        assertSame(ignoring, a.replace(a, ignoring));
-    }
-
     @Test void applyReplacesParameter() {
         Lambda lambda = makeIdentityFunction();
         Lambda ignoring = new Lambda(x -> lambda);
@@ -61,6 +54,6 @@ public class LambdaTest {
         Expression applied = lambda.apply(ident);
 
         assertTrue(applied instanceof Lambda);
-        assertSame(ident, ((Lambda) applied).expression);
-    } */
+        assertSame(ident, ((Lambda) applied).getExpression());
+    }
 }

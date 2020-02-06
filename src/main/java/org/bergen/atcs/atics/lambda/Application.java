@@ -25,14 +25,14 @@ public class Application implements Expression {
         this.right = right;
     }
 
-    /* public Expression run() {
+    public Expression run() {
         Expression leftResolved = left.run();
         if (leftResolved instanceof Lambda) {
             return ((Lambda) leftResolved).apply(right.run()).run();
         } else {
             return this;
         }
-    } */
+    }
 
     @Override
     public void replace(Expression search, Expression replaceWith) {
