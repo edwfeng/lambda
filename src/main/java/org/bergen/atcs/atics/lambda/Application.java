@@ -1,11 +1,27 @@
 package org.bergen.atcs.atics.lambda;
 
 public class Application implements Expression {
-    public final Expression left;
-    public final Expression right;
+    private Expression left;
+    private Expression right;
 
     public Application(Expression left, Expression right) {
         this.left = left;
+        this.right = right;
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
+    }
+
+    private void setLeft(Expression left) {
+        this.left = left;
+    }
+
+    private void setRight(Expression right) {
         this.right = right;
     }
 

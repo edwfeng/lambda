@@ -8,11 +8,19 @@ public class Lambda implements Expression {
     }
 
     public final BoundVariable parameter;
-    public final Expression expression;
+    private Expression expression;
 
     public Lambda(Function<BoundVariable, Expression> makeExpression) {
         parameter = new BoundVariable();
         expression = makeExpression.apply(parameter);
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    private void setExpression(Expression expression) {
+        this.expression = expression;
     }
 
     /* public Expression apply(Expression arg) {
