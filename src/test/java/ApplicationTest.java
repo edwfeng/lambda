@@ -14,7 +14,7 @@ public class ApplicationTest {
         Expression left = makeIdentityFunction();
         Expression right = makeIdentityFunction();
         Application application = new Application(left, right);
-        assertSame(left, application.left);
-        assertSame(right, application.right);
+        assertSame(left, application.getLeft());
+        assertSame(right, application.getRight());
     }
 }
