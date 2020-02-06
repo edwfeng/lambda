@@ -40,7 +40,7 @@ public class LambdaTest {
         assertSame(mLambda.parameter, mLambda.expression);
     }
 
-    @Test void replaceReplacesSelf() {
+    /* @Test void replaceReplacesSelf() {
         Lambda a = makeIdentityFunction();
         Lambda ignoring = new Lambda(x -> a);
 
@@ -52,7 +52,7 @@ public class LambdaTest {
         Lambda ignoring = new Lambda(x -> lambda);
 
         assertSame(ignoring, lambda.apply(ignoring));
-    }
+    } */
 
     @Test void applyReplacesParameterRecursively() {
         Lambda ident = makeIdentityFunction();

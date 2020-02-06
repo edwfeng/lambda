@@ -9,16 +9,16 @@ public class Application implements Expression {
         this.right = right;
     }
 
-    public Expression run() {
+    /* public Expression run() {
         Expression leftResolved = left.run();
         if (leftResolved instanceof Lambda) {
             return ((Lambda) leftResolved).apply(right.run()).run();
         } else {
             return this;
         }
-    }
+    } */
 
-    public Expression replace(Expression search, Expression replaceWith) {
+    /* public Expression replace(Expression search, Expression replaceWith) {
         if (equals(search)) {
             return replaceWith;
         }
@@ -27,5 +27,5 @@ public class Application implements Expression {
                 left.replace(search, replaceWith),
                 right.replace(search, replaceWith)
         );
-    }
+    } */
 }
