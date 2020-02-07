@@ -11,10 +11,10 @@ public class Token {
         this.meta = "";
     }
 
-    enum Type {
+    public enum Type {
         PARENS_OPEN, PARENS_CLOSE, VARIABLE, LAMBDA, APPLICATION
     }
 
-    final String meta;
-    final Type type;
+    public final String meta;
+    public final Type type;
 }
