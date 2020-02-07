@@ -27,6 +27,13 @@ public class Lambda implements Expression {
         this.expression = expression;
     }
 
+    @Override
+    public Expression run() {
+        Lambda newExpression = deepCopy();
+        newExpression.setExpression(newExpression.getExpression().run());
+        return newExpression;
+    }
+
     public Expression apply(Expression arg) {
         // If the lambda is just the identity function, return the argument immediately.
         if (parameter.equals(getExpression())) {

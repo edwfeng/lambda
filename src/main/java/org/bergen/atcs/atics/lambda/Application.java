@@ -30,7 +30,7 @@ public class Application implements Expression {
         if (leftResolved instanceof Lambda) {
             return ((Lambda) leftResolved).apply(right.run()).run();
         } else {
-            return this;
+            return new Application(leftResolved, right.run());
         }
     }
 
@@ -44,6 +44,7 @@ public class Application implements Expression {
 
         if (getRight().equals(search)) {
             setRight(replaceWith);
+        } else {
             getRight().replace(search, replaceWith);
         }
     }
