@@ -56,4 +56,24 @@ public class LambdaTest {
         assertTrue(applied instanceof Lambda);
         assertSame(ident, ((Lambda) applied).getExpression());
     }
+
+    @Test void deepCopyCreatesNewLambda() {
+        Lambda lambda = makeIdentityFunction();
+        Lambda newLambda = lambda.deepCopy();
+        assertNotSame(lambda, newLambda);
+        assertNotSame(lambda.parameter, newLambda.parameter);
+        assertNotSame(lambda.getExpression(), newLambda.getExpression());
+
+        // Check that they are both the identity function
+        assertSame(lambda.parameter, lambda.getExpression());
+        assertSame(newLambda.parameter, newLambda.getExpression());
+    }
+
+    @Test void deepCopyDeepCopiesLambdaInnerExpression() {
+        Lambda lambda = new Lambda(x -> makeIdentityFunction());
+        Lambda newLambda = lambda.deepCopy();
+        assertNotSame(lambda, newLambda);
+        assertNotSame(lambda.parameter, newLambda.parameter);
+        assertNotSame(lambda.getExpression(), newLambda.getExpression());
+    }
 }

@@ -50,6 +50,10 @@ public class Lambda implements Expression {
     public Lambda deepCopy() {
         Expression newExpression = expression.deepCopy();
         return new Lambda(newParameter -> {
+            if (parameter.equals(newExpression)) {
+                return newParameter;
+            }
+
             newExpression.replace(parameter, newParameter);
             return newExpression;
         });

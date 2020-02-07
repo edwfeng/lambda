@@ -1,3 +1,4 @@
+import jdk.nashorn.internal.runtime.regexp.joni.ApplyCaseFoldArg;
 import org.bergen.atcs.atics.lambda.Expression;
 import org.bergen.atcs.atics.lambda.Lambda;
 import org.bergen.atcs.atics.lambda.Application;
@@ -16,5 +17,16 @@ public class ApplicationTest {
         Application application = new Application(left, right);
         assertSame(left, application.getLeft());
         assertSame(right, application.getRight());
+    }
+
+    @Test void deepCopyCreatesNewApplication() {
+        Expression left = makeIdentityFunction();
+        Expression right = makeIdentityFunction();
+        Application application = new Application(left, right);
+        Application newApplication = application.deepCopy();
+
+        assertNotSame(application, newApplication);
+        assertNotSame(left, newApplication.getLeft());
+        assertNotSame(right, newApplication.getRight());
     }
 }

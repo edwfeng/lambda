@@ -18,8 +18,17 @@ public class FreeVariableTest {
 
     @Test void runReturnsItself() {
         String name = "free";
-        FreeVariable freeVar = new FreeVariable("free");
+        FreeVariable freeVar = new FreeVariable(name);
         assertSame(freeVar, freeVar.run());
         assertEquals(name, freeVar.name);
+    }
+
+    @Test void deepCopyCreatesNewFreeVariable() {
+        String name = "free";
+        FreeVariable freeVar = new FreeVariable(name);
+        FreeVariable newFreeVar = freeVar.deepCopy();
+
+        assertNotSame(freeVar, newFreeVar);
+        assertEquals(name, newFreeVar.name);
     }
 }
