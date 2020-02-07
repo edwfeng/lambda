@@ -11,11 +11,6 @@ public class LambdaTest {
         return new Lambda(x -> x);
     }
 
-    @Test void runReturnsItself() {
-        Lambda lambda = makeIdentityFunction();
-        assertSame(lambda, lambda.run());
-    }
-
     @Test void parameterIsUnique() {
         Lambda a = makeIdentityFunction();
         Lambda b = makeIdentityFunction();
