@@ -6,7 +6,9 @@ public class Lambda implements Expression {
     public static class BoundVariable implements Expression {
         private BoundVariable() {}
 
-        public BoundVariable deepCopy() {return this;}
+        public BoundVariable deepCopy() {
+            return this;
+        }
     }
 
     public final BoundVariable parameter;
