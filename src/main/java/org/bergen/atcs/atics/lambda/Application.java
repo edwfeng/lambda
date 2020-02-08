@@ -28,7 +28,7 @@ public class Application implements Expression {
     public Expression run() {
         Expression leftResolved = left.run();
         if (leftResolved instanceof Lambda) {
-            return ((Lambda) leftResolved).apply(right.run()).run();
+            return ((Lambda) leftResolved).apply(right).run();
         } else {
             return new Application(leftResolved, right.run());
         }
