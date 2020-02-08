@@ -16,7 +16,12 @@ public class Lambda implements Expression {
             if (map.size() == 0)
                 return "a";
 
-            String curString = Collections.max(map.values());
+            String curString = Collections.max(map.values(),
+                    (str1, str2) -> {
+                        if (str1.length() != str2.length())
+                            return str1.length() - str2.length();
+                        return str1.compareTo(str2);
+                    });
             StringBuilder newString = new StringBuilder();
 
             boolean prevCarry = true;
@@ -27,7 +32,7 @@ public class Lambda implements Expression {
                 else
                     newString.append(x);
 
-                prevCarry = x + 1 > 'z';
+                prevCarry &= x + 1 > 'z';
             }
 
             if (prevCarry)
