@@ -1,5 +1,7 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.HashMap;
+
 public interface Expression {
     /**
      * Runs the expression and returns the result.
@@ -23,4 +25,12 @@ public interface Expression {
      * @return new Expression
      */
     Expression deepCopy();
+
+    default String expToString() {
+        return expToString(new HashMap<>());
+    }
+
+    default String expToString(HashMap<Lambda.BoundVariable, String> map) {
+        return null;
+    }
 }

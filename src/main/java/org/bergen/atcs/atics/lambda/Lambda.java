@@ -1,5 +1,7 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.function.Function;
 
 public class Lambda implements Expression {
@@ -8,6 +10,38 @@ public class Lambda implements Expression {
 
         public BoundVariable deepCopy() {
             return this;
+        }
+
+        private String getNextName(HashMap<BoundVariable, String> map) {
+            if (map.size() == 0)
+                return "a";
+
+            String curString = Collections.max(map.values());
+            StringBuilder newString = new StringBuilder();
+
+            boolean prevCarry = true;
+            for (int i = curString.length() - 1; i >= 0; i--) {
+                char x = curString.charAt(i);
+                if (prevCarry)
+                    newString.append((char) (((x + 1 - 'a') % ('z' - 'a' + 1)) + 'a'));
+                else
+                    newString.append(x);
+
+                prevCarry = x + 1 > 'z';
+            }
+
+            if (prevCarry)
+                newString.append("a");
+
+            return newString.reverse().toString();
+        }
+
+        @Override
+        public String expToString(HashMap<BoundVariable, String> map) {
+            if (!map.containsKey(this))
+                map.put(this, getNextName(map));
+
+            return map.get(this);
         }
     }
 
@@ -66,5 +100,9 @@ public class Lambda implements Expression {
             newExpression.replace(parameter, newParameter);
             return newExpression;
         });
+    }
+
+    public String expToString(HashMap<BoundVariable, String> map) {
+        return "(\\" + parameter.expToString(map) + "." + expression.expToString(map) + ")";
     }
 }

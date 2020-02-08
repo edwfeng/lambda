@@ -1,5 +1,7 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.HashMap;
+
 public class Application implements Expression {
     private Expression left;
     private Expression right;
@@ -54,5 +56,9 @@ public class Application implements Expression {
                 left.deepCopy(),
                 right.deepCopy()
         );
+    }
+
+    public String expToString(HashMap<Lambda.BoundVariable, String> map) {
+        return "(" + left.expToString(map) + " " + right.expToString(map) + ")";
     }
 }

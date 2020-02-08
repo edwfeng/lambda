@@ -179,4 +179,14 @@ public class LambdaApplicatorTest {
         Application app = new Application(new Application(times(), number(2)), number(3));
         assertNumber((Lambda)app.run(), 6);
     }
+
+    @Test void printFunctions() {
+        System.out.println(trueLambda().expToString());
+        System.out.println(falseLambda().expToString());
+        System.out.println(notLambda().expToString());
+        System.out.println(ifLambda().expToString());
+        System.out.println(succ().expToString());
+        System.out.println(pred().expToString());
+        System.out.println(y().expToString());
+    }
 }
