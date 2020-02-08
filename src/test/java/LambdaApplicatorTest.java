@@ -66,6 +66,8 @@ public class LambdaApplicatorTest {
     }
 
     private static void assertNumber(Lambda lambda, int number) {
+        // This method runs *very* slowly for n > 100 or so.
+
         DummyExpression f = new DummyExpression();
         DummyExpression x = new DummyExpression();
 
@@ -77,11 +79,11 @@ public class LambdaApplicatorTest {
         for (int i = 0; i < number; i++) {
             assertTrue(current instanceof Application);
             Application app = (Application)current;
-            assertSame(f, app.getLeft());
+            assertSame(f, app.getLeft().run());
             current = app.getRight();
         }
 
-        assertSame(x, current);
+        assertSame(x, current.run());
     }
 
     private static boolean isTrueLambda(Expression expression) {
@@ -188,5 +190,16 @@ public class LambdaApplicatorTest {
         System.out.println(succ().expToString());
         System.out.println(pred().expToString());
         System.out.println(y().expToString());
+    }
+
+    @Test void factorialZeroToFive() {
+        int current = 1;
+        for (int i = 0; i <= 5; i++) {
+            System.out.printf("Computing (Y factorial %d)\n", i);
+            if (i > 0) current *= i;
+            Application app = new Application(new Application(y(), factorial()), number(i));
+            Expression thing = app.run();
+            assertNumber((Lambda)thing, current);
+        }
     }
 }
