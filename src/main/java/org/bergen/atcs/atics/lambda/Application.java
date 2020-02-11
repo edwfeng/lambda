@@ -1,6 +1,8 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Application implements Expression {
     private Expression left;
@@ -27,12 +29,19 @@ public class Application implements Expression {
         this.right = right;
     }
 
-    public Expression run() {
-        Expression leftResolved = left.run();
-        if (leftResolved instanceof Lambda) {
-            return ((Lambda) leftResolved).apply(right).run();
+    public Expression run(Deque<Expression> stack, Map<Expression, Expression> replacements) {
+        if (replacements.containsKey(this)) {
+            return replacements.get(this);
+        }
+
+        stack.push(right);
+        int oldSize = stack.size();
+        Expression result = left.run(stack, replacements);
+        if (stack.size() < oldSize) {
+            return result;
         } else {
-            return new Application(leftResolved, right.run());
+            stack.pop();
+            return new Application(result, right.run(stack, replacements));
         }
     }
 

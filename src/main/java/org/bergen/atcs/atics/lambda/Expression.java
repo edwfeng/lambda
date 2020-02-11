@@ -1,14 +1,21 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Map;
 
 public interface Expression {
     /**
      * Runs the expression and returns the result.
      * @return result of the expression
      */
+    default Expression run(Deque<Expression> stack, Map<Expression, Expression> replacements) {
+        return replacements.getOrDefault(this, this);
+    }
+
     default Expression run() {
-        return this;
+        return run(new ArrayDeque<>(), new HashMap<>());
     }
 
     /**

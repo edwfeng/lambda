@@ -1,7 +1,9 @@
 package org.bergen.atcs.atics.lambda;
 
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public class Lambda implements Expression {
@@ -64,6 +66,34 @@ public class Lambda implements Expression {
 
     private void setExpression(Expression expression) {
         this.expression = expression;
+    }
+
+    @Override
+    public Expression run(Deque<Expression> stack, Map<Expression, Expression> replacements) {
+        if (replacements.containsKey(this)) {
+            return replacements.get(this);
+        }
+
+        Expression argument = stack.pollFirst();
+        if (argument == null) {
+            return this;
+        }
+
+        boolean hadParameter = replacements.containsKey(parameter);
+        Expression old = null;
+        if (hadParameter) {
+            old = replacements.get(parameter);
+        }
+
+        replacements.put(parameter, argument);
+
+        Expression result = expression.run(stack, replacements);
+
+        if (hadParameter) {
+            replacements.put(parameter, old);
+        }
+
+        return result;
     }
 
     public Expression apply(Expression arg) {
