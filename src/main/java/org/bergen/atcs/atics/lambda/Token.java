@@ -1,6 +1,8 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Token {
     public enum Type {
@@ -69,5 +71,29 @@ public class Token {
 
     public Token copy() {
         return new Token(type, meta);
+    }
+
+    public Expression convert() {
+        return convert(new HashMap<>());
+    }
+
+    public Expression convert(HashMap<String, Lambda.BoundVariable> boundVariables) {
+        switch (type) {
+            case LAMBDA:
+                return new Lambda(meta -> {
+                    @SuppressWarnings("unchecked") HashMap<String, Lambda.BoundVariable> newVars = (HashMap<String, Lambda.BoundVariable>)boundVariables.clone();
+                    newVars.put(this.meta, meta);
+                    return children[0].convert(newVars);
+                });
+            case APPLICATION:
+                return new Application(children[0].convert(boundVariables), children[1].convert(boundVariables));
+            case VARIABLE:
+                if (boundVariables.containsKey(this.meta))
+                    return boundVariables.get(this.meta);
+                else
+                    return new FreeVariable(this.meta);
+            default:
+                return null;
+        }
     }
 }

@@ -1,5 +1,6 @@
 import static org.bergen.atcs.atics.lambda.Parser.*;
 
+import org.bergen.atcs.atics.lambda.Expression;
 import org.bergen.atcs.atics.lambda.Token;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +43,7 @@ public class ParserTest {
     @Test void doesTheThingIJustMadeWorkQuestionMark() {
         List<Token> tokens = parse("\\x.(a b) x");
         Token token = makeTree(tokens);
-        System.out.println(token);
+        Expression exp = token.convert();
+        System.out.println(exp.expToString());
     }
 }
