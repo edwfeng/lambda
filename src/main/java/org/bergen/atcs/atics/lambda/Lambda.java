@@ -1,5 +1,6 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.Function;
@@ -98,6 +99,12 @@ public class Lambda implements Expression {
             newExpression.replace(parameter, newParameter);
             return newExpression;
         });
+    }
+
+
+    public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
+        expression.getFreeVariables(freeVars);
+        return freeVars;
     }
 
     public String expToString(HashMap<BoundVariable, String> map) {

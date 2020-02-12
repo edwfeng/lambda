@@ -1,5 +1,6 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface Expression {
@@ -25,6 +26,10 @@ public interface Expression {
      * @return new Expression
      */
     Expression deepCopy();
+
+    default ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
+        return freeVars;
+    }
 
     default String expToString() {
         return expToString(new HashMap<>());

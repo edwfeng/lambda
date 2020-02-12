@@ -1,5 +1,6 @@
 package org.bergen.atcs.atics.lambda;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Application implements Expression {
@@ -56,6 +57,12 @@ public class Application implements Expression {
                 left.deepCopy(),
                 right.deepCopy()
         );
+    }
+
+    public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
+        left.getFreeVariables(freeVars);
+        right.getFreeVariables(freeVars);
+        return freeVars;
     }
 
     public String expToString(HashMap<Lambda.BoundVariable, String> map) {
