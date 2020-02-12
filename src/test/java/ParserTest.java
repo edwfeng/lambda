@@ -38,4 +38,10 @@ public class ParserTest {
         assert(getCurrentWordLength("\\x.xy", 3) == 2);
         assert(getCurrentWordLength("\\x.x ", 3) == 1);
     }
+
+    @Test void doesTheThingIJustMadeWorkQuestionMark() {
+        List<Token> tokens = parse("\\x.(a b) x");
+        Token token = makeTree(tokens);
+        System.out.println(token);
+    }
 }
