@@ -32,10 +32,10 @@ public interface Expression {
     }
 
     default String expToString() {
-        return expToString(new HashMap<>());
+        return expToString(new HashMap<>(), getFreeVariables(new ArrayList<>()));
     }
 
-    default String expToString(HashMap<Lambda.BoundVariable, String> map) {
+    default String expToString(HashMap<Lambda.BoundVariable, String> map, ArrayList<String> freeVars) {
         return null;
     }
 }

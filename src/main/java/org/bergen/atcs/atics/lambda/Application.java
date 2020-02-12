@@ -65,7 +65,7 @@ public class Application implements Expression {
         return freeVars;
     }
 
-    public String expToString(HashMap<Lambda.BoundVariable, String> map) {
-        return "(" + left.expToString(map) + " " + right.expToString(map) + ")";
+    public String expToString(HashMap<Lambda.BoundVariable, String> map, ArrayList<String> freeVars) {
+        return "(" + left.expToString(map, freeVars) + " " + right.expToString(map, freeVars) + ")";
     }
 }

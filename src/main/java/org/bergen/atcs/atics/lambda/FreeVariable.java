@@ -19,7 +19,7 @@ public class FreeVariable implements Expression {
         return freeVars;
     }
 
-    public String expToString(HashMap<Lambda.BoundVariable, String> map) {
+    public String expToString(HashMap<Lambda.BoundVariable, String> map, ArrayList<String> freeVars) {
         return name;
     }
 }

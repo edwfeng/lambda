@@ -13,39 +13,48 @@ public class Lambda implements Expression {
             return this;
         }
 
-        private String getNextName(HashMap<BoundVariable, String> map) {
+        private String getNextName(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+            String result;
+
             if (map.size() == 0)
-                return "a";
+                result = "a";
+            else {
+                String curString = Collections.max(map.values(),
+                        (str1, str2) -> {
+                            if (str1.length() != str2.length())
+                                return str1.length() - str2.length();
+                            return str1.compareTo(str2);
+                        });
+                StringBuilder newString = new StringBuilder();
 
-            String curString = Collections.max(map.values(),
-                    (str1, str2) -> {
-                        if (str1.length() != str2.length())
-                            return str1.length() - str2.length();
-                        return str1.compareTo(str2);
-                    });
-            StringBuilder newString = new StringBuilder();
+                boolean prevCarry = true;
+                for (int i = curString.length() - 1; i >= 0; i--) {
+                    char x = curString.charAt(i);
+                    if (prevCarry)
+                        newString.append((char) (((x + 1 - 'a') % ('z' - 'a' + 1)) + 'a'));
+                    else
+                        newString.append(x);
 
-            boolean prevCarry = true;
-            for (int i = curString.length() - 1; i >= 0; i--) {
-                char x = curString.charAt(i);
+                    prevCarry &= x + 1 > 'z';
+                }
+
                 if (prevCarry)
-                    newString.append((char) (((x + 1 - 'a') % ('z' - 'a' + 1)) + 'a'));
-                else
-                    newString.append(x);
+                    newString.append("a");
 
-                prevCarry &= x + 1 > 'z';
+                result = newString.reverse().toString();
             }
 
-            if (prevCarry)
-                newString.append("a");
-
-            return newString.reverse().toString();
+            if (freeVars.contains(result)) {
+                map.put(new BoundVariable(), result);
+                return getNextName(map, freeVars);
+            }
+            return result;
         }
 
         @Override
-        public String expToString(HashMap<BoundVariable, String> map) {
+        public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
             if (!map.containsKey(this))
-                map.put(this, getNextName(map));
+                map.put(this, getNextName(map, freeVars));
 
             return map.get(this);
         }
@@ -107,7 +116,7 @@ public class Lambda implements Expression {
         return freeVars;
     }
 
-    public String expToString(HashMap<BoundVariable, String> map) {
-        return "(\\" + parameter.expToString(map) + "." + expression.expToString(map) + ")";
+    public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+        return "(\\" + parameter.expToString(map, freeVars) + "." + expression.expToString(map, freeVars) + ")";
     }
 }

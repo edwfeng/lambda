@@ -4,6 +4,7 @@ import org.bergen.atcs.atics.lambda.Expression;
 import org.bergen.atcs.atics.lambda.Token;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParserTest {
@@ -44,6 +45,8 @@ public class ParserTest {
         List<Token> tokens = parse("\\x.(a b) x");
         Token token = makeTree(tokens);
         Expression exp = token.convert();
+        for (String name : exp.getFreeVariables(new ArrayList<>()))
+            System.out.println(name);
         System.out.println(exp.expToString());
     }
 }
