@@ -32,29 +32,34 @@ public class Parser {
 
     public static Token makeTree(List<Token> in) {
         Iterator<Token> iterator = in.iterator();
-        return makeTree(in, iterator);
+        return makeTree(iterator);
     }
 
-    public static Token makeTree(List<Token> in, Iterator<Token> iterator) {
+    public static Token makeTree(Iterator<Token> iterator) {
         Token current = null;
         while (iterator.hasNext()) {
             Token token = iterator.next().copy();
             if (token.type == Token.Type.PARENS_CLOSE) break;
             if (token.type == Token.Type.PARENS_OPEN)
-                token = makeTree(in, iterator);
+                token = makeTree(iterator);
 
             if (current == null) current = token;
             else if (current.getNumChildren() == current.type.getMaxChildren()) {
+                while (current.getParent() != null && current.getParent().type == Token.Type.APPLICATION)
+                    current = current.getParent();
+
                 Token app = new Token(Token.Type.APPLICATION);
                 app.addChild(current);
                 app.addChild(token);
 
                 if (current.getParent() != null) {
-                    current.getParent().clearChildren();
+                    current.getParent().popChild();
                     current.getParent().addChild(app);
-                    app.setParent(current);
+                    app.setParent(current.getParent());
                 }
-                current = app;
+                current.setParent(app);
+                token.setParent(app);
+                current = token;
             }
             else {
                 current.addChild(token);

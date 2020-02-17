@@ -49,4 +49,9 @@ public class ParserTest {
             System.out.println(name);
         System.out.println(exp.expToString());
     }
+
+    @Test void tryRunningSomethingForReal() {
+        System.out.println(makeTree(parse("\\a.b c d")).convert().expToString());
+        System.out.println(makeTree(parse("\\x.y\\z.b")).convert().expToString());
+    }
 }

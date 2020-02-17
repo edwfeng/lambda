@@ -1,6 +1,5 @@
 package org.bergen.atcs.atics.lambda;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -56,13 +55,8 @@ public class Token {
         children[childStackPos++] = child;
     }
 
-    public void clearChildren() {
-        Arrays.fill(children, null);
-        childStackPos = 0;
-    }
-
-    public Token[] getChildren() {
-        return children;
+    public void popChild() {
+        children[--childStackPos] = null;
     }
 
     public int getNumChildren() {
