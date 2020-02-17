@@ -64,22 +64,24 @@ public class Token {
     }
 
     public Expression convert() {
-        return convert(new HashMap<>());
+        return convert(new HashMap<>(), new HashMap<>());
     }
 
-    public Expression convert(HashMap<String, Lambda.BoundVariable> boundVariables) {
+    public Expression convert(HashMap<String, Lambda.BoundVariable> boundVars, HashMap<String, Expression> freeVars) {
         switch (type) {
             case LAMBDA:
                 return new Lambda(meta -> {
-                    @SuppressWarnings("unchecked") HashMap<String, Lambda.BoundVariable> newVars = (HashMap<String, Lambda.BoundVariable>)boundVariables.clone();
+                    @SuppressWarnings("unchecked") HashMap<String, Lambda.BoundVariable> newVars = (HashMap<String, Lambda.BoundVariable>)boundVars.clone();
                     newVars.put(this.meta, meta);
-                    return children[0].convert(newVars);
+                    return children[0].convert(newVars, freeVars);
                 });
             case APPLICATION:
-                return new Application(children[0].convert(boundVariables), children[1].convert(boundVariables));
+                return new Application(children[0].convert(boundVars, freeVars), children[1].convert(boundVars, freeVars));
             case VARIABLE:
-                if (boundVariables.containsKey(this.meta))
-                    return boundVariables.get(this.meta);
+                if (boundVars.containsKey(this.meta))
+                    return boundVars.get(this.meta);
+                else if (freeVars.containsKey(this.meta))
+                    return freeVars.get(this.meta);
                 else
                     return new FreeVariable(this.meta);
             default:

@@ -117,6 +117,6 @@ public class Lambda implements Expression {
     }
 
     public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
-        return "(\\" + parameter.expToString(map, freeVars) + "." + expression.expToString(map, freeVars) + ")";
+        return "(λ" + parameter.expToString(map, freeVars) + "." + expression.expToString(map, freeVars) + ")";
     }
 }

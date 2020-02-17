@@ -31,6 +31,11 @@ public interface Expression {
         return freeVars;
     }
 
+    default boolean equalsExp(Expression o) {
+        if (o == null) return false;
+        return this.expToString().equals(o.expToString());
+    }
+
     default String expToString() {
         return expToString(new HashMap<>(), getFreeVariables(new ArrayList<>()));
     }

@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static java.lang.Character.isLetterOrDigit;
-
 public class Parser {
     public static List<Token> parse(String in) {
         List<Token> tokens = new ArrayList<>();
 
         for (int i = 0; i < in.length(); i++) {
-            if (isLetterOrDigit(in.charAt(i))) {
-                int length = getCurrentWordLength(in, i);
-                tokens.add(new Token(Token.Type.VARIABLE, in.substring(i, i + length)));
-                i += length - 1;
-            } else if (in.charAt(i) == '\\') {
+            if (in.charAt(i) == '\\') {
                 i++;
                 int length = getCurrentWordLength(in, i);
                 tokens.add(new Token(Token.Type.LAMBDA, in.substring(i, i + length)));
@@ -24,6 +18,10 @@ public class Parser {
                 tokens.add(new Token(Token.Type.PARENS_OPEN));
             } else if (in.charAt(i) == ')') {
                 tokens.add(new Token(Token.Type.PARENS_CLOSE));
+            } else if (in.charAt(i) != '.' && in.charAt(i) != ' ') {
+                    int length = getCurrentWordLength(in, i);
+                    tokens.add(new Token(Token.Type.VARIABLE, in.substring(i, i + length)));
+                    i += length - 1;
             }
         }
 
@@ -76,8 +74,15 @@ public class Parser {
 
     public static int getCurrentWordLength(String in, int pos) {
         for (int i = pos; i < in.length(); i++)
-            if(!isLetterOrDigit(in.charAt(i)))
-                return i - pos;
+            switch (in.charAt(i)) {
+                case '\\':
+                case '(':
+                case ')':
+                case '.':
+                case ' ':
+                    return i - pos;
+                default:
+            }
 
         return in.length() - pos;
     }
