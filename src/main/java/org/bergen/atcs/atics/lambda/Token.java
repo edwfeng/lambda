@@ -36,11 +36,7 @@ public class Token {
     }
 
     public Token(Type type) {
-        this.type = type;
-        this.meta = "";
-        this.parent = null;
-        this.children = new Token[type.getMaxChildren()];
-        this.childStackPos = 0;
+        this(type, "");
     }
 
     public Token getParent() {
