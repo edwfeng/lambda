@@ -1,17 +1,18 @@
-import jdk.nashorn.internal.runtime.regexp.joni.ApplyCaseFoldArg;
+import org.bergen.atcs.atics.lambda.Application;
 import org.bergen.atcs.atics.lambda.Expression;
 import org.bergen.atcs.atics.lambda.Lambda;
-import org.bergen.atcs.atics.lambda.Application;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ApplicationTest {
     Lambda makeIdentityFunction() {
         return new Lambda(x -> x);
     }
 
-    @Test void constructorCreatesFinalApplication() {
+    @Test
+    void constructorCreatesFinalApplication() {
         Expression left = makeIdentityFunction();
         Expression right = makeIdentityFunction();
         Application application = new Application(left, right);
@@ -19,7 +20,8 @@ public class ApplicationTest {
         assertSame(right, application.getRight());
     }
 
-    @Test void deepCopyCreatesNewApplication() {
+    @Test
+    void deepCopyCreatesNewApplication() {
         Expression left = makeIdentityFunction();
         Expression right = makeIdentityFunction();
         Application application = new Application(left, right);

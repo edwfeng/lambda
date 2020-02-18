@@ -16,12 +16,12 @@ public class Application implements Expression {
         return left;
     }
 
-    public Expression getRight() {
-        return right;
-    }
-
     private void setLeft(Expression left) {
         this.left = left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 
     private void setRight(Expression right) {

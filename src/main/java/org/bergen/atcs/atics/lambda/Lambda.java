@@ -6,60 +6,6 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public class Lambda implements Expression {
-    public static class BoundVariable implements Expression {
-        private BoundVariable() {}
-
-        public BoundVariable deepCopy() {
-            return this;
-        }
-
-        private String getNextName(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
-            String result;
-
-            if (map.size() == 0)
-                result = "a";
-            else {
-                String curString = Collections.max(map.values(),
-                        (str1, str2) -> {
-                            if (str1.length() != str2.length())
-                                return str1.length() - str2.length();
-                            return str1.compareTo(str2);
-                        });
-                StringBuilder newString = new StringBuilder();
-
-                boolean prevCarry = true;
-                for (int i = curString.length() - 1; i >= 0; i--) {
-                    char x = curString.charAt(i);
-                    if (prevCarry)
-                        newString.append((char) (((x + 1 - 'a') % ('z' - 'a' + 1)) + 'a'));
-                    else
-                        newString.append(x);
-
-                    prevCarry &= x + 1 > 'z';
-                }
-
-                if (prevCarry)
-                    newString.append("a");
-
-                result = newString.reverse().toString();
-            }
-
-            if (freeVars.contains(result)) {
-                map.put(new BoundVariable(), result);
-                return getNextName(map, freeVars);
-            }
-            return result;
-        }
-
-        @Override
-        public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
-            if (!map.containsKey(this))
-                map.put(this, getNextName(map, freeVars));
-
-            return map.get(this);
-        }
-    }
-
     public final BoundVariable parameter;
     private Expression expression;
 
@@ -110,7 +56,6 @@ public class Lambda implements Expression {
         });
     }
 
-
     public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
         expression.getFreeVariables(freeVars);
         return freeVars;
@@ -118,5 +63,60 @@ public class Lambda implements Expression {
 
     public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
         return "(λ" + parameter.expToString(map, freeVars) + "." + expression.expToString(map, freeVars) + ")";
+    }
+
+    public static class BoundVariable implements Expression {
+        private BoundVariable() {
+        }
+
+        public BoundVariable deepCopy() {
+            return this;
+        }
+
+        private String getNextName(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+            String result;
+
+            if (map.size() == 0)
+                result = "a";
+            else {
+                String curString = Collections.max(map.values(),
+                        (str1, str2) -> {
+                            if (str1.length() != str2.length())
+                                return str1.length() - str2.length();
+                            return str1.compareTo(str2);
+                        });
+                StringBuilder newString = new StringBuilder();
+
+                boolean prevCarry = true;
+                for (int i = curString.length() - 1; i >= 0; i--) {
+                    char x = curString.charAt(i);
+                    if (prevCarry)
+                        newString.append((char) (((x + 1 - 'a') % ('z' - 'a' + 1)) + 'a'));
+                    else
+                        newString.append(x);
+
+                    prevCarry &= x + 1 > 'z';
+                }
+
+                if (prevCarry)
+                    newString.append("a");
+
+                result = newString.reverse().toString();
+            }
+
+            if (freeVars.contains(result)) {
+                map.put(new BoundVariable(), result);
+                return getNextName(map, freeVars);
+            }
+            return result;
+        }
+
+        @Override
+        public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+            if (!map.containsKey(this))
+                map.put(this, getNextName(map, freeVars));
+
+            return map.get(this);
+        }
     }
 }

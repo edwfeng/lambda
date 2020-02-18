@@ -11,13 +11,15 @@ public class LambdaTest {
         return new Lambda(x -> x);
     }
 
-    @Test void parameterIsUnique() {
+    @Test
+    void parameterIsUnique() {
         Lambda a = makeIdentityFunction();
         Lambda b = makeIdentityFunction();
         assertNotSame(a.parameter, b.parameter);
     }
 
-    @Test void constructorInitializesExpressionWithFunction() {
+    @Test
+    void constructorInitializesExpressionWithFunction() {
         Expression expression = makeIdentityFunction();
 
         AtomicInteger numTimesCalled = new AtomicInteger(0);
@@ -30,19 +32,22 @@ public class LambdaTest {
         assertSame(expression, mLambda.getExpression());
     }
 
-    @Test void constructorPassesBoundVariableToFunction() {
+    @Test
+    void constructorPassesBoundVariableToFunction() {
         Lambda mLambda = new Lambda(boundVariable -> boundVariable);
         assertSame(mLambda.parameter, mLambda.getExpression());
     }
 
-    @Test void applyReplacesParameter() {
+    @Test
+    void applyReplacesParameter() {
         Lambda lambda = makeIdentityFunction();
         Lambda ignoring = new Lambda(x -> lambda);
 
         assertSame(ignoring, lambda.apply(ignoring));
     }
 
-    @Test void applyReplacesParameterRecursively() {
+    @Test
+    void applyReplacesParameterRecursively() {
         Lambda ident = makeIdentityFunction();
         Lambda lambda = new Lambda(x -> new Lambda(y -> x));
 
@@ -52,7 +57,8 @@ public class LambdaTest {
         assertSame(ident, ((Lambda) applied).getExpression());
     }
 
-    @Test void deepCopyCreatesNewLambda() {
+    @Test
+    void deepCopyCreatesNewLambda() {
         Lambda lambda = makeIdentityFunction();
         Lambda newLambda = lambda.deepCopy();
         assertNotSame(lambda, newLambda);
@@ -64,7 +70,8 @@ public class LambdaTest {
         assertSame(newLambda.parameter, newLambda.getExpression());
     }
 
-    @Test void deepCopyDeepCopiesLambdaInnerExpression() {
+    @Test
+    void deepCopyDeepCopiesLambdaInnerExpression() {
         Lambda lambda = new Lambda(x -> makeIdentityFunction());
         Lambda newLambda = lambda.deepCopy();
         assertNotSame(lambda, newLambda);

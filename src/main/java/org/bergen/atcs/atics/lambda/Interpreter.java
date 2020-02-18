@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.bergen.atcs.atics.lambda.Parser.makeTree;
 import static org.bergen.atcs.atics.lambda.Parser.parse;

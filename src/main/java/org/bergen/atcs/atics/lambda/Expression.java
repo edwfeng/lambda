@@ -6,6 +6,7 @@ import java.util.HashMap;
 public interface Expression {
     /**
      * Runs the expression and returns the result.
+     *
      * @return result of the expression
      */
     default Expression run() {
@@ -15,10 +16,11 @@ public interface Expression {
     /**
      * Replaces all instances of {@code search} with {@code replaceWith} in the expression.
      *
-     * @param search expression to search for
+     * @param search      expression to search for
      * @param replaceWith expression to replace {@code search} with
      */
-    default void replace(Expression search, Expression replaceWith) {}
+    default void replace(Expression search, Expression replaceWith) {
+    }
 
     /**
      * Creates a new Expression that is η-equivalent to the Expression it is called on.

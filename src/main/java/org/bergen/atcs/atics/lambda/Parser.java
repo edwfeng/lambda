@@ -20,9 +20,9 @@ public class Parser {
             } else if (in.charAt(i) == ')') {
                 tokens.add(new Token(Token.Type.PARENS_CLOSE));
             } else if (in.charAt(i) != '.' && in.charAt(i) != ' ') {
-                    int length = getCurrentWordLength(in, i);
-                    tokens.add(new Token(Token.Type.VARIABLE, in.substring(i, i + length)));
-                    i += length - 1;
+                int length = getCurrentWordLength(in, i);
+                tokens.add(new Token(Token.Type.VARIABLE, in.substring(i, i + length)));
+                i += length - 1;
             }
         }
 
@@ -59,8 +59,7 @@ public class Parser {
                 current.setParent(app);
                 token.setParent(app);
                 current = token;
-            }
-            else {
+            } else {
                 current.addChild(token);
                 token.setParent(current);
                 current = token;

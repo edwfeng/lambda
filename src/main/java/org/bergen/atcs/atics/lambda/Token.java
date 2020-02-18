@@ -1,26 +1,8 @@
 package org.bergen.atcs.atics.lambda;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Token {
-    public enum Type {
-        PARENS_OPEN, PARENS_CLOSE, VARIABLE, LAMBDA(1), APPLICATION(2);
-
-        private final int numChildren;
-
-        Type(int numChildren) {
-            this.numChildren = numChildren;
-        }
-        Type() {
-            this.numChildren = 0;
-        }
-
-        public int getMaxChildren() {
-            return this.numChildren;
-        }
-    }
-
     public final String meta;
     public final Type type;
     private Token parent;
@@ -71,7 +53,7 @@ public class Token {
         switch (type) {
             case LAMBDA:
                 return new Lambda(meta -> {
-                    @SuppressWarnings("unchecked") HashMap<String, Lambda.BoundVariable> newVars = (HashMap<String, Lambda.BoundVariable>)boundVars.clone();
+                    @SuppressWarnings("unchecked") HashMap<String, Lambda.BoundVariable> newVars = (HashMap<String, Lambda.BoundVariable>) boundVars.clone();
                     newVars.put(this.meta, meta);
                     return children[0].convert(newVars, freeVars);
                 });
@@ -86,6 +68,24 @@ public class Token {
                     return new FreeVariable(this.meta);
             default:
                 return null;
+        }
+    }
+
+    public enum Type {
+        PARENS_OPEN, PARENS_CLOSE, VARIABLE, LAMBDA(1), APPLICATION(2);
+
+        private final int numChildren;
+
+        Type(int numChildren) {
+            this.numChildren = numChildren;
+        }
+
+        Type() {
+            this.numChildren = 0;
+        }
+
+        public int getMaxChildren() {
+            return this.numChildren;
         }
     }
 }

@@ -8,11 +8,50 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Contains tests of common lambda expressions and evaluates
  * them using the {@see Lambda} and {@see Application} classes.
- *
+ * <p>
  * This class does not test the parser/output capabilities of the
  * lambda lab.
  */
 public class LambdaApplicatorTest {
+    private static void assertNumber(Lambda lambda, int number) {
+        // This method runs *very* slowly for n > 100 or so.
+
+        DummyExpression f = new DummyExpression();
+        DummyExpression x = new DummyExpression();
+
+        Expression inner = lambda.apply(f).run();
+        assertTrue(inner instanceof Lambda);
+
+        Expression current = ((Lambda) inner).apply(x).run();
+
+        for (int i = 0; i < number; i++) {
+            assertTrue(current instanceof Application);
+            Application app = (Application) current;
+            assertSame(f, app.getLeft().run());
+            current = app.getRight();
+        }
+
+        assertSame(x, current.run());
+    }
+
+    private static boolean isTrueLambda(Expression expression) {
+        DummyExpression x = new DummyExpression();
+        DummyExpression y = new DummyExpression();
+
+        Application application = new Application(new Application(expression, x), y);
+
+        return x == application.run();
+    }
+
+    private static boolean isFalseLambda(Expression expression) {
+        DummyExpression x = new DummyExpression();
+        DummyExpression y = new DummyExpression();
+
+        Application application = new Application(new Application(expression, x), y);
+
+        return y == application.run();
+    }
+
     Lambda trueLambda() {
         return new Lambda(x -> new Lambda(y -> x));
     }
@@ -65,124 +104,98 @@ public class LambdaApplicatorTest {
         return new Lambda(f -> new Lambda(n -> new Application(new Application(new Application(ifLambda(), new Application(isZero(), n)), number(1)), new Application(new Application(times(), n), new Application(f, new Application(new Application(subtract(), n), number(1)))))));
     }
 
-    private static void assertNumber(Lambda lambda, int number) {
-        // This method runs *very* slowly for n > 100 or so.
-
-        DummyExpression f = new DummyExpression();
-        DummyExpression x = new DummyExpression();
-
-        Expression inner = lambda.apply(f).run();
-        assertTrue(inner instanceof Lambda);
-
-        Expression current = ((Lambda)inner).apply(x).run();
-
-        for (int i = 0; i < number; i++) {
-            assertTrue(current instanceof Application);
-            Application app = (Application)current;
-            assertSame(f, app.getLeft().run());
-            current = app.getRight();
-        }
-
-        assertSame(x, current.run());
-    }
-
-    private static boolean isTrueLambda(Expression expression) {
-        DummyExpression x = new DummyExpression();
-        DummyExpression y = new DummyExpression();
-
-        Application application = new Application(new Application(expression, x), y);
-
-        return x == application.run();
-    }
-
-    private static boolean isFalseLambda(Expression expression) {
-        DummyExpression x = new DummyExpression();
-        DummyExpression y = new DummyExpression();
-
-        Application application = new Application(new Application(expression, x), y);
-
-        return y == application.run();
-    }
-
-    @Test void trueLambdaWorks() {
+    @Test
+    void trueLambdaWorks() {
         assertTrue(isTrueLambda(trueLambda()));
         assertFalse(isFalseLambda(trueLambda()));
     }
 
-    @Test void falseLambdaWorks() {
+    @Test
+    void falseLambdaWorks() {
         assertTrue(isFalseLambda(falseLambda()));
         assertFalse(isTrueLambda(falseLambda()));
     }
 
-    @Test void notTrue() {
+    @Test
+    void notTrue() {
         Expression expression = new Application(notLambda(), trueLambda()).run();
 
         assertTrue(isFalseLambda(expression));
         assertFalse(isTrueLambda(expression));
     }
 
-    @Test void notFalse() {
+    @Test
+    void notFalse() {
         Expression expression = new Application(notLambda(), falseLambda()).run();
 
         assertTrue(isTrueLambda(expression));
         assertFalse(isFalseLambda(expression));
     }
 
-    @Test void numbersZeroToTen() {
+    @Test
+    void numbersZeroToTen() {
         for (int i = 0; i <= 10; i++) {
             assertNumber(number(i), i);
         }
     }
 
-    @Test void succZeroToTen() {
+    @Test
+    void succZeroToTen() {
         Expression current = number(0);
         Lambda succ = succ();
         for (int i = 0; i <= 10; i++) {
             current = succ.apply(current).run();
-            assert(current instanceof Lambda);
-            assertNumber((Lambda)current, i + 1);
+            assert (current instanceof Lambda);
+            assertNumber((Lambda) current, i + 1);
         }
     }
 
-    @Test void ifTrue() {
+    @Test
+    void ifTrue() {
         DummyExpression x = new DummyExpression();
         DummyExpression y = new DummyExpression();
         Application app = new Application(new Application(new Application(ifLambda(), trueLambda()), x), y);
         assertSame(x, app.run());
     }
 
-    @Test void ifFalse() {
+    @Test
+    void ifFalse() {
         DummyExpression x = new DummyExpression();
         DummyExpression y = new DummyExpression();
         Application app = new Application(new Application(new Application(ifLambda(), falseLambda()), x), y);
         assertSame(y, app.run());
     }
 
-    @Test void ifZero() {
+    @Test
+    void ifZero() {
         DummyExpression x = new DummyExpression();
         DummyExpression y = new DummyExpression();
         Application app = new Application(new Application(new Application(ifLambda(), new Application(isZero(), number(0))), x), y);
         assertSame(x, app.run());
     }
 
-    @Test void ifNotZero() {
+    @Test
+    void ifNotZero() {
         DummyExpression x = new DummyExpression();
         DummyExpression y = new DummyExpression();
         Application app = new Application(new Application(new Application(ifLambda(), new Application(isZero(), number(1))), x), y);
         assertSame(y, app.run());
     }
 
-    @Test void subtractTest() {
+    @Test
+    void subtractTest() {
         Application app = new Application(new Application(subtract(), number(3)), number(1));
-        assertNumber((Lambda)app.run(), 2);
+        assertNumber((Lambda) app.run(), 2);
     }
 
-    @Test void timesTest() {
+    @Test
+    void timesTest() {
         Application app = new Application(new Application(times(), number(2)), number(3));
-        assertNumber((Lambda)app.run(), 6);
+        assertNumber((Lambda) app.run(), 6);
     }
 
-    @Test void printFunctions() {
+    @Test
+    void printFunctions() {
         System.out.println(trueLambda().expToString());
         System.out.println(falseLambda().expToString());
         System.out.println(notLambda().expToString());
@@ -192,14 +205,15 @@ public class LambdaApplicatorTest {
         System.out.println(y().expToString());
     }
 
-    @Test void factorialZeroToFive() {
+    @Test
+    void factorialZeroToFive() {
         int current = 1;
         for (int i = 0; i <= 5; i++) {
             System.out.printf("Computing (Y factorial %d)\n", i);
             if (i > 0) current *= i;
             Application app = new Application(new Application(y(), factorial()), number(i));
             Expression thing = app.run();
-            assertNumber((Lambda)thing, current);
+            assertNumber((Lambda) thing, current);
         }
     }
 }
