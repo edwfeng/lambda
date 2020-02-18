@@ -50,8 +50,8 @@ public class Interpreter {
 
             // This checks if the input is the name of an existing variable
             // In this case, we want to print the stored value and skip further processing
-            if (variables.containsKey(in.strip())) {
-                System.out.println(variables.get(in.strip()).expToString());
+            if (variables.containsKey(in.trim())) {
+                System.out.println(variables.get(in.trim()).expToString());
                 continue;
             }
 
