@@ -15,10 +15,6 @@ public class Interpreter {
         HashMap<String, Expression> variables = new HashMap<>();
         Scanner scanner = new Scanner(System.in);
 
-        Pattern assignPattern = Pattern.compile("\\s*(\\S+)\\s*=(.*)");
-        Pattern runPattern = Pattern.compile("\\s*run(.*)");
-        Pattern popPattern = Pattern.compile("\\s*populate\\s*(\\d*)\\s*(\\d*)\\s*");
-
         while (true) {
             String in = scanner.nextLine()
                     .replaceAll("λ", "\\\\")
@@ -28,6 +24,8 @@ public class Interpreter {
             if (in.matches("\\s*exit\\s*")) break;
             if (in.matches("\\s*")) continue;
 
+            // This searches for the word `populate`, followed by two numbers
+            Pattern popPattern = Pattern.compile("^\\s*populate\\s+(\\d+)\\s+(\\d+)\\s*$");
             Matcher popMatch = popPattern.matcher(in);
             if (popMatch.find()) {
                 int low = Integer.parseInt(popMatch.group(1));
@@ -50,9 +48,18 @@ public class Interpreter {
                 continue;
             }
 
+            // This checks if the input is the name of an existing variable
+            // In this case, we want to print the stored value and skip further processing
+            if (variables.containsKey(in.strip())) {
+                System.out.println(variables.get(in.strip()).expToString());
+                continue;
+            }
+
             String assignTo = null;
             boolean shouldRun = false;
 
+            // This searches for a `=` and a variable name to store the exp at
+            Pattern assignPattern = Pattern.compile("^\\s*(\\S+)\\s*=(.+)$");
             Matcher assignMatch = assignPattern.matcher(in);
             if (assignMatch.find()) {
                 assignTo = assignMatch.group(1);
@@ -63,6 +70,8 @@ public class Interpreter {
                 in = assignMatch.group(2);
             }
 
+            // This checks if the user wants to run the expression
+            Pattern runPattern = Pattern.compile("^\\s*run\\s+(.+)$");
             Matcher runMatch = runPattern.matcher(in);
             if (runMatch.find()) {
                 shouldRun = true;
