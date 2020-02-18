@@ -11,6 +11,7 @@ public class Parser {
         for (int i = 0; i < in.length(); i++) {
             if (in.charAt(i) == '\\') {
                 i++;
+                while (in.charAt(i) == ' ') i++;
                 int length = getCurrentWordLength(in, i);
                 tokens.add(new Token(Token.Type.LAMBDA, in.substring(i, i + length)));
                 i += length - 1;
