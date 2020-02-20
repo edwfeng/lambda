@@ -13,45 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * lambda lab.
  */
 public class LambdaApplicatorTest {
-    private static void assertNumber(Lambda lambda, int number) {
-        // This method runs *very* slowly for n > 100 or so.
-
-        DummyExpression f = new DummyExpression();
-        DummyExpression x = new DummyExpression();
-
-        Expression inner = lambda.apply(f).run();
-        assertTrue(inner instanceof Lambda);
-
-        Expression current = ((Lambda) inner).apply(x).run();
-
-        for (int i = 0; i < number; i++) {
-            assertTrue(current instanceof Application);
-            Application app = (Application) current;
-            assertSame(f, app.getLeft().run());
-            current = app.getRight();
-        }
-
-        assertSame(x, current.run());
-    }
-
-    private static boolean isTrueLambda(Expression expression) {
-        DummyExpression x = new DummyExpression();
-        DummyExpression y = new DummyExpression();
-
-        Application application = new Application(new Application(expression, x), y);
-
-        return x == application.run();
-    }
-
-    private static boolean isFalseLambda(Expression expression) {
-        DummyExpression x = new DummyExpression();
-        DummyExpression y = new DummyExpression();
-
-        Application application = new Application(new Application(expression, x), y);
-
-        return y == application.run();
-    }
-
     Lambda trueLambda() {
         return new Lambda(x -> new Lambda(y -> x));
     }
@@ -104,8 +65,44 @@ public class LambdaApplicatorTest {
         return new Lambda(f -> new Lambda(n -> new Application(new Application(new Application(ifLambda(), new Application(isZero(), n)), number(1)), new Application(new Application(times(), n), new Application(f, new Application(new Application(subtract(), n), number(1)))))));
     }
 
-    @Test
-    void trueLambdaWorks() {
+    private static void assertNumber(Lambda lambda, int number) {
+        DummyExpression f = new DummyExpression();
+        DummyExpression x = new DummyExpression();
+
+        Expression inner = lambda.apply(f).run();
+        assertTrue(inner instanceof Lambda);
+
+        Expression current = ((Lambda)inner).apply(x).run();
+
+        for (int i = 0; i < number; i++) {
+            assertTrue(current instanceof Application);
+            Application app = (Application)current;
+            assertSame(f, app.getLeft());
+            current = app.getRight();
+        }
+
+        assertSame(x, current);
+    }
+
+    private static boolean isTrueLambda(Expression expression) {
+        DummyExpression x = new DummyExpression();
+        DummyExpression y = new DummyExpression();
+
+        Application application = new Application(new Application(expression, x), y);
+
+        return x == application.run();
+    }
+
+    private static boolean isFalseLambda(Expression expression) {
+        DummyExpression x = new DummyExpression();
+        DummyExpression y = new DummyExpression();
+
+        Application application = new Application(new Application(expression, x), y);
+
+        return y == application.run();
+    }
+
+    @Test void trueLambdaWorks() {
         assertTrue(isTrueLambda(trueLambda()));
         assertFalse(isFalseLambda(trueLambda()));
     }
