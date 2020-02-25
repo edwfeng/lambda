@@ -32,7 +32,10 @@ public class Interpreter {
                 int high = Integer.parseInt(popMatch.group(2));
 
                 for (int i = low; i <= high; i++) {
-                    if (variables.containsKey(String.valueOf(i))) continue;
+                    if (variables.containsKey(String.valueOf(i))) {
+                        System.out.printf("%d is already defined\n", i);
+                        continue;
+                    }
 
                     StringBuilder calls = new StringBuilder();
                     StringBuilder closes = new StringBuilder();
