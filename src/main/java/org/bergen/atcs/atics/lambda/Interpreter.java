@@ -16,6 +16,7 @@ public class Interpreter {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+			System.out.print("> ");
             String in = scanner.nextLine()
                     .replaceAll("λ", "\\\\")
                     .replaceAll("\uFEFF", "");
