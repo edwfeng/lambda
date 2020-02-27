@@ -10,7 +10,7 @@ Here's our implementation of the lambda lab. It's:
 ## Building and Running
 We use Gradle to manage our build. To get up and running with the interpreter, simply run:
 ```shell script
-$ ./gradlew run --console=plain
+$ ./gradlew run
 ```
 (If on Windows, run `gradlew.bat` instead.)
 
