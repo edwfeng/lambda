@@ -32,20 +32,18 @@ public class Interpreter {
                 int low = Integer.parseInt(popMatch.group(1));
                 int high = Integer.parseInt(popMatch.group(2));
 
-                for (int i = low; i <= high; i++) {
-                    if (variables.containsKey(String.valueOf(i))) {
-                        System.out.printf("%d is already defined\n", i);
-                        continue;
-                    }
+                Lambda succ = (Lambda) makeTree(parse("\\n.\\f.\\x.f (n f x)")).convert();
+                Expression num = makeTree(parse("\\f.\\x.x")).convert();
 
-                    StringBuilder calls = new StringBuilder();
-                    StringBuilder closes = new StringBuilder();
-                    for (int j = 0; j < i; j++) {
-                        calls.append("(f ");
-                        closes.append(")");
+                for (int i = 0; i <= high; i++) {
+                    if (i >= low) {
+                        if (variables.containsKey(String.valueOf(i))) {
+                            System.out.printf("%d is already defined\n", i);
+                            continue;
+                        }
+                        variables.put(String.valueOf(i), num);
                     }
-                    String number = "\\f.\\x." + calls + "x" + closes;
-                    variables.put(String.valueOf(i), makeTree(parse(number)).convert());
+                    num = new Application(succ, num).run();
                 }
 
                 System.out.printf("Populated numbers %d to %d\n", low, high);
