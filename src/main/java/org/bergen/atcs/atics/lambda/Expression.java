@@ -2,15 +2,26 @@ package org.bergen.atcs.atics.lambda;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public interface Expression {
-    /**
-     * Runs the expression and returns the result.
-     *
-     * @return result of the expression
-     */
+    default Expression reduce() {
+        return null;
+    }
+
+    default Expression searchAndReduce() {
+        return reduce();
+    }
+
     default Expression run() {
-        return this;
+        Expression previous = null;
+        Expression current = this;
+        while (current != null) {
+            previous = current;
+            current = current.searchAndReduce();
+        }
+
+        return previous;
     }
 
     /**

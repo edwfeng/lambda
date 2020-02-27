@@ -2,6 +2,7 @@ package org.bergen.atcs.atics.lambda;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class Application implements Expression {
     private Expression left;
@@ -28,13 +29,35 @@ public class Application implements Expression {
         this.right = right;
     }
 
-    public Expression run() {
-        Expression leftResolved = left.run();
-        if (leftResolved instanceof Lambda) {
-            return ((Lambda) leftResolved).apply(right.run()).run();
+    @Override
+    public Expression reduce() {
+        if (left instanceof Lambda) {
+            return ((Lambda)left).apply(right);
         } else {
-            return new Application(leftResolved, right.run());
+            return null;
         }
+    }
+
+    @Override
+    public Expression searchAndReduce() {
+        Expression result;
+
+        result = reduce();
+        if (result != null) {
+            return result;
+        }
+
+        result = left.searchAndReduce();
+        if (result != null) {
+            return new Application(result, right);
+        }
+
+        result = right.searchAndReduce();
+        if (result != null) {
+            return new Application(left, result);
+        }
+
+        return null;
     }
 
     @Override

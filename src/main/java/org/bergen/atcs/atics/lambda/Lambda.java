@@ -23,10 +23,25 @@ public class Lambda implements Expression {
     }
 
     @Override
-    public Expression run() {
-        Lambda newExpression = deepCopy();
-        newExpression.setExpression(newExpression.getExpression().run());
-        return newExpression;
+    public Expression searchAndReduce() {
+        Expression reduceResult = reduce();
+        if (reduceResult != null) {
+            return reduceResult;
+        }
+
+        Expression searchResult = expression.searchAndReduce();
+        if (searchResult != null) {
+            return new Lambda(newParameter -> {
+                if (parameter.equals(searchResult)) {
+                    return newParameter;
+                }
+
+                searchResult.replace(parameter, newParameter);
+                return searchResult;
+            });
+        }
+
+        return null;
     }
 
     public Expression apply(Expression arg) {
