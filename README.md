@@ -1,4 +1,6 @@
 # The Lambda Lab
+*by Edward Feng and Anthony Li*
+
 Here's our implementation of the lambda lab. It's:
 * Probably not compliant
 * Probably not performant
