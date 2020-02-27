@@ -1,0 +1,47 @@
+; BOOLEANS AND BRANCHING
+true = λx.λy.x
+false = \f.\x.x ; same as 0
+not = λp.p false true
+and = λp.λq.p q p
+or = λp.λq.p p q
+xor = \p.\q.p (not q) q
+if = λb.λT.λF.((b T) F)
+
+; NUMBER OPERATIONS
+succ = \n.\f.\x.f (n f x)
+pred = λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
++ = λm.λn.λf.λx.(m f) ((n f) x)
+* = λn.λm.λf.λx.n (m f) x
+- = λm.λn.(n pred) m
+even? = λn.n not true
+odd? = \x.not (even? x)
+zero? = \n.n (\x.false) true
+leq? = \m.\n.zero?(- m n)
+lt? = \a.\b.not (leq? b a)
+gt? = \a.\b.not (leq? a b)
+eq? = \m.\n.and (leq? m n) (leq? n m)
+neq? = (not (eq? a b))
+geq? = \a.\b.(leq? b a)
+populate 0 120
+
+; LINKED LISTS
+cons = λx.λy.λf.f x y
+car = λp.p true
+cdr = λp.p false
+null = \x.true
+null? = λp.p (λx.λy.false) ; true if null, false if a pair, UNDEFINED otherwise
+
+Y = λf. (λx. f(x x)) (λx. f(x x))
+factorial = Y \f.\n.(if (zero? n) 1 (* n (f (- n 1))))
+divpair = Y (λg.λq.λa.λb. lt? a b (cons q a) (g (succ q) (- a b) b)) 0
+/ = λa.\b. car (divpair a b)
+mod = λa.\b. cdr (divpair a b)
+
+run factorial 0
+run factorial 1
+run factorial 2
+run factorial 3
+run factorial 4
+run factorial 5
+run / 5 2
+run mod 5 2
