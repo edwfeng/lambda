@@ -39,9 +39,9 @@ public class Interpreter {
                     if (i >= low) {
                         if (variables.containsKey(String.valueOf(i))) {
                             System.out.printf("%d is already defined\n", i);
-                            continue;
+                        } else {
+                            variables.put(String.valueOf(i), num);
                         }
-                        variables.put(String.valueOf(i), num);
                     }
                     num = new Application(succ, num).run();
                 }
