@@ -1,9 +1,11 @@
 package org.bergen.atcs.atics.lambda;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents an application of one Expression onto another.
+ */
 public class Application implements Expression {
     private Expression left;
     private Expression right;

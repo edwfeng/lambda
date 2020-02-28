@@ -3,6 +3,14 @@ package org.bergen.atcs.atics.lambda;
 import java.util.*;
 import java.util.function.Function;
 
+/**
+ * <p>Represents a lambda.</p>
+ *
+ * <p>A lambda is an expression that contains another expression with a bound variable, or parameter. Expressions can be
+ * "applied" to the lambda, in which case the bound variable is replaced with the Expression.</p>
+ *
+ * <p>More formally, a lambda is an expression that supports β-reduction.</p>
+ */
 public class Lambda implements Expression {
     /**
      * Bound variable representing the parameter for this lambda.
@@ -105,6 +113,9 @@ public class Lambda implements Expression {
         return "(λ" + parameter.expToString(map, freeVars) + "." + getExpression().expToString(map, freeVars) + ")";
     }
 
+    /**
+     * Expression representing a Lambda's parameter.
+     */
     public static class BoundVariable implements Expression {
         // Don't let anyone construct this class.
         private BoundVariable() {}

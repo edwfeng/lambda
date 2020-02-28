@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 import static org.bergen.atcs.atics.lambda.Parser.makeTree;
 import static org.bergen.atcs.atics.lambda.Parser.parse;
 
+/**
+ * Provides a REPL environment for evaluating lambda expressions.
+ */
 public class Interpreter {
     public static void main(String[] args) {
         HashMap<String, Expression> variables = new HashMap<>();

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface defining an expression for use in lambda calculus.
+ */
 public interface Expression {
     /**
      * Reduces the Expression and returns the result.
