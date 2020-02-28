@@ -68,6 +68,7 @@ public interface Expression {
     /**
      * Searches the Expression for names of free variables and appends their names to a List.
      *
+     * @param <TList> type of list to append to
      * @param freeVars the list to add the variables to
      * @return freeVars, for convenience
      */
