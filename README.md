@@ -25,6 +25,12 @@ $ ./gradlew jar
 ```
 The `.jar` file will be located in the `build/libs` folder.
 
+To generate a Javadoc:
+```shell script
+$ ./gradlew javadoc
+```
+The docs will be located in the `build/docs` folder.
+
 ## Code Structure
 Code for the lambda interpreter and applicator is located in the `src/main` folder, under the `org.bergen.atcs.atics.lambda` package.
 
