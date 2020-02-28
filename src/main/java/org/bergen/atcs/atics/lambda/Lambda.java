@@ -1,19 +1,29 @@
 package org.bergen.atcs.atics.lambda;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 import java.util.function.Function;
 
 public class Lambda implements Expression {
+    /**
+     * Bound variable representing the parameter for this lambda.
+     */
     public final BoundVariable parameter;
+
     private Expression expression;
 
+    /**
+     * Constructs a lambda by calling makeExpression with a bound variable representing the parameter.
+     * @param makeExpression function that given a BoundVariable, returns an Expression for the lambda
+     */
     public Lambda(Function<BoundVariable, Expression> makeExpression) {
         parameter = new BoundVariable();
         expression = makeExpression.apply(parameter);
     }
 
+    /**
+     * Gets the expression of this Lambda.
+     * @return the expression
+     */
     public Expression getExpression() {
         return expression;
     }
@@ -44,6 +54,11 @@ public class Lambda implements Expression {
         return null;
     }
 
+    /**
+     * Applies arg to the lambda and returns the result.
+     * @param arg Expression to apply
+     * @return result of applying arg to the Lambda
+     */
     public Expression apply(Expression arg) {
         // If the lambda is just the identity function, return the argument immediately.
         if (parameter.equals(getExpression())) {
@@ -66,6 +81,7 @@ public class Lambda implements Expression {
         }
     }
 
+    @Override
     public Lambda deepCopy() {
         Expression newExpression = getExpression().deepCopy();
         return new Lambda(newParameter -> {
@@ -78,24 +94,27 @@ public class Lambda implements Expression {
         });
     }
 
-    public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
+    @Override
+    public <TList extends List<String>> TList getFreeVariables(TList freeVars) {
         getExpression().getFreeVariables(freeVars);
         return freeVars;
     }
 
-    public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+    @Override
+    public String expToString(Map<BoundVariable, String> map, List<String> freeVars) {
         return "(λ" + parameter.expToString(map, freeVars) + "." + getExpression().expToString(map, freeVars) + ")";
     }
 
     public static class BoundVariable implements Expression {
-        private BoundVariable() {
-        }
+        // Don't let anyone construct this class.
+        private BoundVariable() {}
 
+        @Override
         public BoundVariable deepCopy() {
             return this;
         }
 
-        private String getNextName(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+        private String getNextName(Map<BoundVariable, String> map, List<String> freeVars) {
             String result;
 
             if (map.size() == 0)
@@ -134,7 +153,7 @@ public class Lambda implements Expression {
         }
 
         @Override
-        public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
+        public String expToString(Map<BoundVariable, String> map, List<String> freeVars) {
             if (!map.containsKey(this))
                 map.put(this, getNextName(map, freeVars));
 

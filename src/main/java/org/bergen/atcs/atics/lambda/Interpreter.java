@@ -43,7 +43,7 @@ public class Interpreter {
                             variables.put(String.valueOf(i), num);
                         }
                     }
-                    num = new Application(succ, num).run();
+                    num = Expression.run(new Application(succ, num));
                 }
 
                 System.out.printf("Populated numbers %d to %d\n", low, high);
@@ -81,7 +81,7 @@ public class Interpreter {
             }
 
             Expression exp = makeTree(parse(in)).convert(new HashMap<>(), variables);
-            if (shouldRun) exp = exp.run();
+            if (shouldRun) exp = Expression.run(exp);
 
             if (assignTo == null) {
                 Expression finalExp = exp;

@@ -1,3 +1,4 @@
+import org.bergen.atcs.atics.lambda.Expression;
 import org.bergen.atcs.atics.lambda.FreeVariable;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class FreeVariableTest {
     void runReturnsItself() {
         String name = "free";
         FreeVariable freeVar = new FreeVariable(name);
-        assertSame(freeVar, freeVar.run());
+        assertSame(freeVar, Expression.run(freeVar));
         assertEquals(name, freeVar.name);
     }
 

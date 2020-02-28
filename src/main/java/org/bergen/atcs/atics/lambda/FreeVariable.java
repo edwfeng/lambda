@@ -1,7 +1,8 @@
 package org.bergen.atcs.atics.lambda;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FreeVariable implements Expression {
     public final String name;
@@ -14,12 +15,12 @@ public class FreeVariable implements Expression {
         return new FreeVariable(name);
     }
 
-    public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
+    public <TList extends List<String>> TList getFreeVariables(TList freeVars) {
         if (!freeVars.contains(name)) freeVars.add(name);
         return freeVars;
     }
 
-    public String expToString(HashMap<Lambda.BoundVariable, String> map, ArrayList<String> freeVars) {
+    public String expToString(Map<Lambda.BoundVariable, String> map, List<String> freeVars) {
         return name;
     }
 }

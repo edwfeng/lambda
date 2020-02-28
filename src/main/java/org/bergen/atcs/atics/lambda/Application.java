@@ -1,18 +1,27 @@
 package org.bergen.atcs.atics.lambda;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.Function;
+import java.util.List;
+import java.util.Map;
 
 public class Application implements Expression {
     private Expression left;
     private Expression right;
 
+    /**
+     * Constructs an Application with two expressions.
+     * @param left Expression on the left
+     * @param right Expression on the right
+     */
     public Application(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }
 
+    /**
+     * Gets the Expression on the left.
+     * @return Expression on the left
+     */
     public Expression getLeft() {
         return left;
     }
@@ -21,6 +30,10 @@ public class Application implements Expression {
         this.left = left;
     }
 
+    /**
+     * Gets the Expression on the right.
+     * @return Expression on the right
+     */
     public Expression getRight() {
         return right;
     }
@@ -75,6 +88,7 @@ public class Application implements Expression {
         }
     }
 
+    @Override
     public Application deepCopy() {
         return new Application(
                 getLeft().deepCopy(),
@@ -82,13 +96,15 @@ public class Application implements Expression {
         );
     }
 
-    public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
+    @Override
+    public <TList extends List<String>> TList getFreeVariables(TList freeVars) {
         getLeft().getFreeVariables(freeVars);
         getRight().getFreeVariables(freeVars);
         return freeVars;
     }
 
-    public String expToString(HashMap<Lambda.BoundVariable, String> map, ArrayList<String> freeVars) {
+    @Override
+    public String expToString(Map<Lambda.BoundVariable, String> map, List<String> freeVars) {
         return "(" + getLeft().expToString(map, freeVars) + " " + getRight().expToString(map, freeVars) + ")";
     }
 }
