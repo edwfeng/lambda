@@ -29,7 +29,7 @@ public class Lambda implements Expression {
             return reduceResult;
         }
 
-        Expression searchResult = expression.searchAndReduce();
+        Expression searchResult = getExpression().searchAndReduce();
         if (searchResult != null) {
             return new Lambda(newParameter -> {
                 if (parameter.equals(searchResult)) {
@@ -52,7 +52,7 @@ public class Lambda implements Expression {
 
         // Otherwise, copy the expression, replacing all instances of the bound variable
         // with arg.
-        Expression newExpression = expression.deepCopy();
+        Expression newExpression = getExpression().deepCopy();
         newExpression.replace(parameter, arg);
         return newExpression;
     }
@@ -67,7 +67,7 @@ public class Lambda implements Expression {
     }
 
     public Lambda deepCopy() {
-        Expression newExpression = expression.deepCopy();
+        Expression newExpression = getExpression().deepCopy();
         return new Lambda(newParameter -> {
             if (parameter.equals(newExpression)) {
                 return newParameter;
@@ -79,12 +79,12 @@ public class Lambda implements Expression {
     }
 
     public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
-        expression.getFreeVariables(freeVars);
+        getExpression().getFreeVariables(freeVars);
         return freeVars;
     }
 
     public String expToString(HashMap<BoundVariable, String> map, ArrayList<String> freeVars) {
-        return "(λ" + parameter.expToString(map, freeVars) + "." + expression.expToString(map, freeVars) + ")";
+        return "(λ" + parameter.expToString(map, freeVars) + "." + getExpression().expToString(map, freeVars) + ")";
     }
 
     public static class BoundVariable implements Expression {

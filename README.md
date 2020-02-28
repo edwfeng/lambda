@@ -28,4 +28,4 @@ The `.jar` file will be located in the `build/libs` folder.
 ## Code Structure
 Code for the lambda interpreter and applicator is located in the `src/main` folder, under the `org.bergen.atcs.atics.lambda` package.
 
-The tests in the `src/test` folder mostly test the lambda applicator and runtime.
+The tests in the `src/test` folder mostly test the lambda applicator/runtime.

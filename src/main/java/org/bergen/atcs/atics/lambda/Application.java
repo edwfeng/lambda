@@ -31,8 +31,8 @@ public class Application implements Expression {
 
     @Override
     public Expression reduce() {
-        if (left instanceof Lambda) {
-            return ((Lambda)left).apply(right);
+        if (getLeft() instanceof Lambda) {
+            return ((Lambda)getLeft()).apply(getRight());
         } else {
             return null;
         }
@@ -47,14 +47,14 @@ public class Application implements Expression {
             return result;
         }
 
-        result = left.searchAndReduce();
+        result = getLeft().searchAndReduce();
         if (result != null) {
-            return new Application(result, right);
+            return new Application(result, getRight());
         }
 
-        result = right.searchAndReduce();
+        result = getRight().searchAndReduce();
         if (result != null) {
-            return new Application(left, result);
+            return new Application(getLeft(), result);
         }
 
         return null;
@@ -77,18 +77,18 @@ public class Application implements Expression {
 
     public Application deepCopy() {
         return new Application(
-                left.deepCopy(),
-                right.deepCopy()
+                getLeft().deepCopy(),
+                getRight().deepCopy()
         );
     }
 
     public ArrayList<String> getFreeVariables(ArrayList<String> freeVars) {
-        left.getFreeVariables(freeVars);
-        right.getFreeVariables(freeVars);
+        getLeft().getFreeVariables(freeVars);
+        getRight().getFreeVariables(freeVars);
         return freeVars;
     }
 
     public String expToString(HashMap<Lambda.BoundVariable, String> map, ArrayList<String> freeVars) {
-        return "(" + left.expToString(map, freeVars) + " " + right.expToString(map, freeVars) + ")";
+        return "(" + getLeft().expToString(map, freeVars) + " " + getRight().expToString(map, freeVars) + ")";
     }
 }
