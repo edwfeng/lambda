@@ -4,7 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Collection of static methods used for parsing inputs.
+ */
 public class Parser {
+    /**
+     * Parses a string into a flat list of tokens.
+     * @param in Input string
+     * @return Flat list of tokens
+     */
     public static List<Token> parse(String in) {
         List<Token> tokens = new ArrayList<>();
 
@@ -29,11 +37,21 @@ public class Parser {
         return tokens;
     }
 
+    /**
+     * Creates an Abstract Syntax Tree from a flat list of tokens.
+     * @param in Flat list of tokens
+     * @return The root node of a tree of tokens
+     */
     public static Token makeTree(List<Token> in) {
         Iterator<Token> iterator = in.iterator();
         return makeTree(iterator);
     }
 
+    /**
+     * Takes an iterator for a list and adds each item to a tree of tokens.
+     * @param iterator An iterator for the list
+     * @return The root node of a tree of tokens
+     */
     public static Token makeTree(Iterator<Token> iterator) {
         Token current = null;
         while (iterator.hasNext()) {
@@ -72,6 +90,12 @@ public class Parser {
         return current;
     }
 
+    /**
+     * Gets the length of the next non-symbol word.
+     * @param in String to search in
+     * @param pos Position in string to start searching
+     * @return Length of the word starting at {@code pos}
+     */
     public static int getCurrentWordLength(String in, int pos) {
         for (int i = pos; i < in.length(); i++)
             switch (in.charAt(i)) {

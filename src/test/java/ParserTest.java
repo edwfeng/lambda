@@ -11,9 +11,9 @@ public class ParserTest {
     void printTokenList(List<Token> tokens) {
         for (Token token : tokens) {
             if (token.type.equals(Token.Type.LAMBDA)) {
-                System.out.printf("LAMBDA (%s)\n", token.meta);
+                System.out.printf("LAMBDA (%s)\n", token.name);
             } else if (token.type.equals(Token.Type.VARIABLE)) {
-                System.out.printf("VARIABLE (%s)\n", token.meta);
+                System.out.printf("VARIABLE (%s)\n", token.name);
             } else {
                 System.out.println(token.type);
             }

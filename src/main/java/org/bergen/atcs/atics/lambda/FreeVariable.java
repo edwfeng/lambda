@@ -4,9 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a free variable.
+ */
 public class FreeVariable implements Expression {
+    /**
+     * The name of the free variable.
+     */
     public final String name;
 
+    /**
+     * Creates a new FreeVariable with the given name.
+     * @param name Name of the FreeVariable
+     */
     public FreeVariable(String name) {
         this.name = name;
     }
